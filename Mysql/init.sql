@@ -1,6 +1,6 @@
 -- Tạo database (phòng khi Docker chạy lại)
-CREATE DATABASE IF NOT EXISTS laravel CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE laravel;
+CREATE DATABASE IF NOT EXISTS demoDocker CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE demoDocker;
 
 -- Users
 CREATE TABLE IF NOT EXISTS users (
