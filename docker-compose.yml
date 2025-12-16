@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  laravel:
+    build:
+      context: ./Laravel12_app
+    container_name: laravel12_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./Laravel12_app:/var/www
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: laravel
+      DB_USERNAME: laravel
+      DB_PASSWORD: laravel
+    depends_on:
+      - mysql
+    networks:
+      - app_net
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: root
+    depends_on:
+      - mysql
+    networks:
+      - app_net
+
+  react:
+    build:
+      context: ./React_app
+    container_name: react_app
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./React_app:/app
+    command: npm run dev -- --host
+    networks:
+      - app_net
+
+volumes:
+  mysql_data:
+
+networks:
+  app_net:
+    driver: bridge
