@@ -24,11 +24,4 @@ RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
 EXPOSE 9000
 
-CMD sh -c "
-  if [ ! -f .env ]; then
-    echo 'Creating .env file...';
-    cp .env.example .env;
-    php artisan key:generate;
-  fi;
-  php-fpm
-"
+CMD sh -c "if [ ! -f .env ]; then echo 'Creating .env file...'; cp .env.example .env; php artisan key:generate; fi && php-fpm"
