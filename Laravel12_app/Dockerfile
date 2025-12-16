@@ -28,8 +28,12 @@ RUN chown -R www-data:www-data /var/www \
 # Cài package PHP
 RUN composer install --no-interaction --prefer-dist --optimize-autoloader
 
+# TẠO APP_KEY TỰ ĐỘNG (FIX LỖI MissingAppKeyException)
+RUN if [ ! -f .env ]; then cp .env.example .env; fi \
+    && php artisan key:generate --force
+
 # PHP-FPM lắng nghe cổng 9000
 EXPOSE 9000
 
-# Chạy PHP-FPM (BẮT BUỘC)
+# Chạy PHP-FPM
 CMD ["php-fpm"]
